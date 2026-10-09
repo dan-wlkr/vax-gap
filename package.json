@@ -1,0 +1,13 @@
+{
+  "name": "vax-gap",
+  "version": "0.88.0",
+  "private": true,
+  "description": "Prototype tool for practice nurses to plan catch-up vaccines when records are missing or incomplete.",
+  "scripts": {
+    "test": "node tests/rules.test.js",
+    "serve": "npx --yes serve ."
+  },
+  "devDependencies": {
+    "jsdom": "^24.0.0"
+  }
+}
