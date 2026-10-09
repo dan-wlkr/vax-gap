@@ -241,15 +241,17 @@ body{margin:0;font-family:var(--body);-webkit-font-smoothing:antialiased;-moz-os
 .info .gov-related a:hover{color:#003078;text-decoration-thickness:max(3px,.1875rem)}
 .info .gov-related a:focus-visible{outline:3px solid transparent;color:#0b0c0c;background:var(--focus);box-shadow:0 -2px var(--focus),0 4px #0b0c0c;text-decoration:none}
 .info .sch{list-style:none;margin:0 0 8px;padding:0;border-top:1px solid var(--line)}
-.info .sch > li{display:grid;grid-template-columns:170px minmax(0,1fr);gap:16px;padding:14px 0;margin:0;border-bottom:1px solid var(--line)}
+.info .sch > li{display:grid;grid-template-columns:170px minmax(0,1fr);gap:16px;padding:14px 16px;margin:0;border-bottom:1px solid var(--line)}
+.info .sch > li:nth-child(odd){background:rgba(255,255,255,.6)}
 .sch-age{font-weight:700;font-family:var(--display)}
 .info .sch-items{list-style:none;margin:0;padding:0}
-.info .sch-items li{margin:0 0 10px;display:grid;grid-template-columns:minmax(150px,240px) minmax(0,1fr);gap:16px;align-items:baseline}
+.info .sch-items li{margin:0 0 10px;display:grid;grid-template-columns:minmax(0,1fr) fit-content(45%);gap:16px;align-items:baseline}
+.info .sch-items li > span{text-align:right}
 .info .sch-items li:last-child{margin-bottom:0}
 .sch-items b{display:block;line-height:1.4}
 .sch-items .sch-for{display:block;color:#46536B;font-size:14px;line-height:1.4;margin-top:2px}
 .sch-items span{display:block;color:#46536B;font-size:16px;line-height:1.45}
-@media (max-width:640px){ .info .sch > li{grid-template-columns:1fr;gap:6px} .sch-age{font-size:14px;color:var(--amber)} .info .sch-items li{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:12px} }
+@media (max-width:640px){ .info .sch > li{grid-template-columns:1fr;gap:6px} .sch-age{font-size:14px;color:var(--amber)} .info .sch > li{padding:12px} }
 .info .log{list-style:none;margin:0 0 8px;padding:0;border-top:1px solid var(--line)}
 .info .log li{display:grid;grid-template-columns:116px minmax(0,1fr);gap:16px;padding:14px 0;border-bottom:1px solid var(--line);margin:0}
 .log time{font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;padding-top:2px}
