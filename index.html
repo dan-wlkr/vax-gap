@@ -225,6 +225,8 @@ body{margin:0;font-family:var(--body);-webkit-font-smoothing:antialiased;-moz-os
 .ext-link b{display:block;font-size:17px;line-height:1.3}
 .ext-link > span > span{display:block;font-size:14px;font-weight:400;color:var(--grey);margin-top:2px}
 .ext-link svg{flex:none;width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.info .qg-title{font-size:24px;letter-spacing:-.02em;margin:40px 0 4px}
+.info .sch-h{font-family:var(--display);font-size:18px;margin:24px 0 10px}
 .info .sch{list-style:none;margin:0 0 8px;padding:0;border-top:1px solid var(--line)}
 .info .sch > li{display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;padding:14px 0;margin:0;border-bottom:1px solid var(--line)}
 .sch-age{font-weight:700;font-family:var(--display)}
@@ -1325,7 +1327,8 @@ function pageSchedule(){
       <a class="ext-link" href="https://www.gov.uk/government/publications/the-complete-routine-immunisation-schedule" target="_blank" rel="noopener"><span><b>Complete routine immunisation schedule</b><span>UKHSA on GOV.UK</span></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M17 14v4a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h4"/></svg><span class="vh">(opens in a new tab)</span></a>
       <a class="ext-link" href="https://www.gov.uk/government/collections/immunisation-against-infectious-disease-the-green-book" target="_blank" rel="noopener"><span><b>The Green Book</b><span>Immunisation against infectious disease</span></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M17 14v4a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h4"/></svg><span class="vh">(opens in a new tab)</span></a>
     </div>
-    <h2>Babies and children</h2>
+    <h2 class="qg-title">Quick guide</h2>
+    <h3 class="sch-h">Babies and children</h3>
     <ul class="sch">
       ${row('8 weeks',[['6-in-1','Diphtheria, tetanus, whooping cough, polio, Hib, hepatitis B'],['Rotavirus','Sickness and diarrhoea'],['MenB','Meningitis B']])}
       ${row('12 weeks',[['6-in-1','2nd dose'],['Rotavirus','2nd dose'],['MenB','2nd dose']])}
@@ -1335,18 +1338,18 @@ function pageSchedule(){
       ${row('2 to 3 years',[['Flu (nasal spray)','Every autumn, for children aged 2 or 3 on 31 August']])}
       ${row('3 years 4 months',[['4-in-1 pre-school booster','Diphtheria, tetanus, whooping cough, polio']])}
     </ul>
-    <h2>School programmes</h2>
+    <h3 class="sch-h">School programmes</h3>
     <ul class="sch">
       ${row('Reception to Year 11',[['Flu (nasal spray)','Every autumn, given at school']])}
       ${row('Year 8',[['HPV','1 dose']])}
       ${row('Year 9',[['Td/IPV','Tetanus, diphtheria, polio. Teenage booster'],['MenACWY','Meningitis A, C, W and Y']])}
     </ul>
-    <h2>Adults</h2>
+    <h3 class="sch-h">Adults</h3>
     <ul class="sch">
       ${row('65 years',[['Pneumococcal (PPV23)','1 dose'],['Shingles (Shingrix)','2 doses, 6 to 12 months apart'],['Flu','Every autumn']])}
       ${row('75 years',[['RSV','1 dose']])}
     </ul>
-    <h2>Spacing in catch-up plans</h2>
+    <h3 class="sch-h">Spacing in catch-up plans</h3>
     <ul>
       <li>Doses of the same vaccine in a course are usually at least 4 weeks apart.</li>
       <li>Count the day a dose is given as day 0. A 4 week gap means the next dose is due on day 28, never earlier.</li>
