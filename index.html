@@ -230,11 +230,13 @@ body{margin:0;font-family:var(--body);-webkit-font-smoothing:antialiased;-moz-os
 .info .qg-title{font-size:24px;letter-spacing:-.02em;margin:40px 0 4px}
 .info .sch-h{font-family:var(--display);font-size:18px;margin:24px 0 10px}
 .is-schedule main{max-width:none}
-.gov-related{border-top:2px solid #1d70b8;padding-top:14px;margin:8px 0 8px;max-width:640px}
-.info .gov-related h2{font-size:19px;margin:0 0 10px}
+.gov-related{background:var(--card);border:1px solid var(--line);border-top:5px solid #1d70b8;border-radius:14px;padding:20px 24px 22px;margin:20px 0 8px;box-shadow:0 1px 2px rgba(20,35,63,.06),0 10px 24px -14px rgba(20,35,63,.3)}
+.info .gov-related h2{font-size:22px;margin:0 0 14px}
 .info .gov-related ul{list-style:none;padding:0;margin:0}
-.info .gov-related li{margin:0 0 10px}
-.info .gov-related a{color:#1d70b8;text-decoration:underline;text-decoration-thickness:max(1px,.0625rem);text-underline-offset:.15em;font-size:17px;font-weight:400}
+.info .gov-related li{margin:0;padding:12px 0;border-top:1px solid var(--line)}
+.info .gov-related li:last-child{padding-bottom:0}
+.info .gov-related li p{margin:4px 0 0;color:#46536B;font-size:15px;line-height:1.45}
+.info .gov-related a{color:#1d70b8;text-decoration:underline;text-decoration-thickness:max(1px,.0625rem);text-underline-offset:.15em;font-size:19px;font-weight:600}
 .info .gov-related a:visited{color:#4c2c92}
 .info .gov-related a:hover{color:#003078;text-decoration-thickness:max(3px,.1875rem)}
 .info .gov-related a:focus-visible{outline:3px solid transparent;color:#0b0c0c;background:var(--focus);box-shadow:0 -2px var(--focus),0 4px #0b0c0c;text-decoration:none}
@@ -245,8 +247,9 @@ body{margin:0;font-family:var(--body);-webkit-font-smoothing:antialiased;-moz-os
 .info .sch-items li{margin:0 0 10px;display:grid;grid-template-columns:minmax(150px,240px) minmax(0,1fr);gap:16px;align-items:baseline}
 .info .sch-items li:last-child{margin-bottom:0}
 .sch-items b{display:block;line-height:1.4}
+.sch-items .sch-for{display:block;color:#46536B;font-size:14px;line-height:1.4;margin-top:2px}
 .sch-items span{display:block;color:#46536B;font-size:16px;line-height:1.45}
-@media (max-width:640px){ .info .sch > li{grid-template-columns:1fr;gap:6px} .sch-age{font-size:14px;color:var(--amber)} .info .sch-items li{display:block} }
+@media (max-width:640px){ .info .sch > li{grid-template-columns:1fr;gap:6px} .sch-age{font-size:14px;color:var(--amber)} .info .sch-items li{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:12px} }
 .info .log{list-style:none;margin:0 0 8px;padding:0;border-top:1px solid var(--line)}
 .info .log li{display:grid;grid-template-columns:116px minmax(0,1fr);gap:16px;padding:14px 0;border-bottom:1px solid var(--line);margin:0}
 .log time{font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;padding-top:2px}
@@ -1331,38 +1334,38 @@ function pageUpdates(){
   </div>`;
 }
 function pageSchedule(){
-  const row = (age, items)=>`<li><span class="sch-age">${age}</span><ul class="sch-items">${items.map(([n,w])=>`<li><b>${n}</b><span>${w}</span></li>`).join('')}</ul></li>`;
+  const row = (age, items)=>`<li><span class="sch-age">${age}</span><ul class="sch-items">${items.map(([n,w,f])=>`<li><div><b>${n}</b>${f?`<small class="sch-for">${f}</small>`:''}</div><span>${w}</span></li>`).join('')}</ul></li>`;
   return `<div class="info schedule">
     <h1>UK routine schedule</h1>
     <p class="lead">Quick reference for England. Always check the full UKHSA schedule and the Green Book.</p>
     <nav class="gov-related" aria-labelledby="relHead">
       <h2 id="relHead">Official guidance</h2>
       <ul>
-        <li><a href="https://www.gov.uk/government/publications/the-complete-routine-immunisation-schedule" target="_blank" rel="noopener">Complete routine immunisation schedule<span class="vh"> (opens in new tab)</span></a></li>
-        <li><a href="https://www.gov.uk/government/collections/immunisation-against-infectious-disease-the-green-book" target="_blank" rel="noopener">Immunisation against infectious disease: the Green Book<span class="vh"> (opens in new tab)</span></a></li>
+        <li><a href="https://www.gov.uk/government/publications/the-complete-routine-immunisation-schedule" target="_blank" rel="noopener">Complete routine immunisation schedule<span class="vh"> (opens in new tab)</span></a><p>UKHSA timings for every routine vaccine, from 8 weeks to 75 years.</p></li>
+        <li><a href="https://www.gov.uk/government/collections/immunisation-against-infectious-disease-the-green-book" target="_blank" rel="noopener">Immunisation against infectious disease: the Green Book<span class="vh"> (opens in new tab)</span></a><p>Chapters on each vaccine, including doses, spacing and who should have it.</p></li>
       </ul>
     </nav>
     <h2 class="qg-title">Quick guide</h2>
     <h3 class="sch-h">Babies and children</h3>
     <ul class="sch">
-      ${row('8 weeks',[['6-in-1','Diphtheria, tetanus, whooping cough, polio, Hib, hepatitis B'],['Rotavirus','Sickness and diarrhoea'],['MenB','Meningitis B']])}
+      ${row('8 weeks',[['6-in-1','1st dose','Diphtheria, tetanus, whooping cough, polio, Hib, hepatitis B'],['Rotavirus','1st dose','Sickness and diarrhoea'],['MenB','1st dose','Meningitis B']])}
       ${row('12 weeks',[['6-in-1','2nd dose'],['Rotavirus','2nd dose'],['MenB','2nd dose']])}
-      ${row('16 weeks',[['6-in-1','3rd dose'],['Pneumococcal (PCV)','Pneumonia, meningitis, sepsis']])}
-      ${row('1 year',[['MenB','Booster'],['PCV','Booster'],['MMRV','Measles, mumps, rubella, chickenpox. 1st dose']])}
+      ${row('16 weeks',[['6-in-1','3rd dose'],['Pneumococcal (PCV)','1st dose','Pneumonia, meningitis, sepsis']])}
+      ${row('1 year',[['MenB','Booster'],['PCV','Booster'],['MMRV','1st dose','Measles, mumps, rubella, chickenpox']])}
       ${row('18 months',[['6-in-1','4th dose, for children born from 1 July 2024'],['MMRV','2nd dose']])}
       ${row('2 to 3 years',[['Flu (nasal spray)','Every autumn, for children aged 2 or 3 on 31 August']])}
-      ${row('3 years 4 months',[['4-in-1 pre-school booster','Diphtheria, tetanus, whooping cough, polio']])}
+      ${row('3 years 4 months',[['4-in-1','Pre-school booster','Diphtheria, tetanus, whooping cough, polio']])}
     </ul>
     <h3 class="sch-h">School programmes</h3>
     <ul class="sch">
       ${row('Reception to Year 11',[['Flu (nasal spray)','Every autumn, given at school']])}
-      ${row('Year 8',[['HPV','1 dose']])}
-      ${row('Year 9',[['Td/IPV','Tetanus, diphtheria, polio. Teenage booster'],['MenACWY','Meningitis A, C, W and Y']])}
+      ${row('Year 8',[['HPV','1 dose','Cancers caused by HPV']])}
+      ${row('Year 9',[['Td/IPV','Teenage booster','Tetanus, diphtheria, polio'],['MenACWY','1 dose','Meningitis A, C, W and Y']])}
     </ul>
     <h3 class="sch-h">Adults</h3>
     <ul class="sch">
-      ${row('65 years',[['Pneumococcal (PPV23)','1 dose'],['Shingles (Shingrix)','2 doses, 6 to 12 months apart'],['Flu','Every autumn']])}
-      ${row('75 years',[['RSV','1 dose']])}
+      ${row('65 years',[['Pneumococcal (PPV23)','1 dose','Pneumonia, meningitis, sepsis'],['Shingles (Shingrix)','2 doses, 6 to 12 months apart'],['Flu','Every autumn']])}
+      ${row('75 years',[['RSV','1 dose','Respiratory syncytial virus']])}
     </ul>
     <h3 class="sch-h">Spacing in catch-up plans</h3>
     <ul>
