@@ -493,6 +493,19 @@ label.block{display:block;font-weight:700;margin-bottom:4px}
   #actionBar{bottom:var(--tabh)}
   .toast{bottom:calc(96px + var(--tabh))}
 }
+
+/* More pop-up menu */
+.nav-caret{width:16px;height:16px;margin-left:3px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.more-menu{position:fixed;z-index:11;width:300px;max-width:calc(100vw - 24px);background:#FFFFFF;border:1px solid var(--line);border-radius:14px;padding:6px;box-shadow:0 2px 4px rgba(20,35,63,.06),0 16px 36px -12px rgba(20,35,63,.4)}
+.more-menu[hidden]{display:none}
+.more-menu button{display:flex;align-items:center;gap:12px;width:100%;padding:12px;border:0;border-radius:10px;background:none;font:inherit;color:var(--ink);text-align:left;cursor:pointer}
+.more-menu button:hover{background:#F2F4F7}
+.more-menu button:focus-visible{outline:3px solid var(--focus);outline-offset:-3px}
+.more-menu button > span{flex:1;min-width:0}
+.more-menu b{display:block;font-size:16px}
+.more-menu button > span > span{display:block;font-size:14px;color:var(--grey);line-height:1.35;margin-top:1px}
+.more-menu svg{flex:none;width:18px;height:18px;fill:none;stroke:var(--grey);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+@media (max-width:640px){ .more-menu.from-tab{right:10px;bottom:calc(var(--tabh) + 10px);top:auto} }
 </style>
 <div class="app" id="phone">
   <div class="topbar">
@@ -503,7 +516,7 @@ label.block{display:block;font-weight:700;margin-bottom:4px}
     <nav class="appnav" id="appnav" aria-label="Main">
       <button data-view="home" aria-current="page">Home</button>
       <button data-view="schedule">Schedule</button>
-      <button data-view="more">More</button>
+      <button data-view="more" aria-haspopup="true" aria-expanded="false" aria-controls="moreMenu">More<svg class="nav-caret" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg></button>
       <button data-view="check" class="nav-cta">Vaccine Checker</button>
     </nav>
   </div></div>
@@ -526,8 +539,12 @@ label.block{display:block;font-weight:700;margin-bottom:4px}
     <button data-view="home" aria-current="page"><span class="tb-ico"><svg viewBox="0 0 24 24"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/></svg></span><span class="tb-lbl">Home</span></button>
     <button data-view="check" class="tb-cta"><span class="tb-ico"><svg viewBox="0 0 24 24"><path d="m17 3 4 4M19 5l-3 3M15.5 6.5l2 2M14 5l5 5-8.5 8.5H5.5v-5z"/><path d="M8.5 10.5l2 2M11 8l2 2M3 21l2.5-2.5"/></svg></span><span class="tb-lbl">Checker</span></button>
     <button data-view="schedule"><span class="tb-ico"><svg viewBox="0 0 24 24"><rect x="4" y="5.5" width="16" height="14.5" rx="2"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4M8 13.5h2M14 13.5h2M8 16.8h2"/></svg></span><span class="tb-lbl">Schedule</span></button>
-    <button data-view="more"><span class="tb-ico"><svg viewBox="0 0 24 24"><circle cx="6" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18" cy="12" r="1.6"/></svg></span><span class="tb-lbl">More</span></button>
+    <button data-view="more" aria-haspopup="true" aria-expanded="false" aria-controls="moreMenu"><span class="tb-ico"><svg viewBox="0 0 24 24"><circle cx="6" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18" cy="12" r="1.6"/></svg></span><span class="tb-lbl">More</span></button>
   </nav>
+  <div class="more-menu" id="moreMenu" hidden>
+    <button data-view="about"><span><b>About Vax Gap</b><span>How it works and where the rules come from</span></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></button>
+    <button data-view="updates"><span><b>Guidance updates</b><span>Recent and upcoming UKHSA changes</span></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></button>
+  </div>
   <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
   <div class="dialog" id="confirm" hidden role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle" aria-describedby="confirmBody">
     <div class="dialog-box">
@@ -1148,7 +1165,23 @@ function closeMenu(){ $('appnav').classList.remove('open'); $('burger').setAttri
 $('burger').onclick = ()=>{ const open = !$('appnav').classList.contains('open'); $('appnav').classList.toggle('open', open); $('burger').setAttribute('aria-expanded', open); if(open) $('appnav').querySelector('[aria-current]')?.focus(); };
 document.addEventListener('keydown',e=>{ if(e.key==='Escape' && $('appnav').classList.contains('open')){ closeMenu(); $('burger').focus(); } });
 document.addEventListener('click',e=>{ if(!e.target.closest('.appbar')) closeMenu(); });
-document.querySelectorAll('.appbar [data-view], .tabbar [data-view]').forEach(b=> b.onclick = ()=>{ closeMenu(); setView(b.dataset.view, b); });
+document.querySelectorAll('.appbar [data-view], .tabbar [data-view]').forEach(b=> b.onclick = ()=>{ closeMenu(); if(b.dataset.view==='more') toggleMore(b); else { closeMore(); setView(b.dataset.view, b); } });
+// More: a small pop-up menu with About and Guidance updates
+let moreFrom = null;
+function closeMore(focusBack){ const m=$('moreMenu'); if(m.hidden) return; m.hidden=true; document.querySelectorAll('[aria-controls="moreMenu"]').forEach(x=>x.setAttribute('aria-expanded','false')); if(focusBack) moreFrom?.focus(); }
+function toggleMore(b){
+  const m=$('moreMenu');
+  if(!m.hidden){ closeMore(); return; }
+  moreFrom=b; m.hidden=false; b.setAttribute('aria-expanded','true');
+  m.classList.toggle('from-tab', !!b.closest('.tabbar'));
+  if(!b.closest('.tabbar')){ const r=b.getBoundingClientRect(); m.style.top=(r.bottom+8)+'px'; m.style.right=Math.max(16, innerWidth-r.right-20)+'px'; m.style.bottom='auto'; }
+  else { m.style.top=''; m.style.right=''; m.style.bottom=''; }
+  m.querySelector('button').focus();
+}
+$('moreMenu').querySelectorAll('[data-view]').forEach(b=> b.onclick = ()=>{ closeMore(); setView(b.dataset.view, b); });
+document.addEventListener('click',e=>{ if(!e.target.closest('#moreMenu,[aria-controls="moreMenu"]')) closeMore(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeMore(true); });
+addEventListener('resize',()=>closeMore());
 ['main','heroSlot'].forEach(id=> $(id).addEventListener('click',e=>{ const b=e.target.closest('[data-goview]'); if(b) setView(b.dataset.goview, b); }));
 $('heroSlot').addEventListener('click',e=>{ if(!e.target.closest('[data-fn]')) return; e.preventDefault(); const n=$('clinicalNote'); if(!n) return;
   n.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth', block:'center'}); n.focus({preventScroll:true});
@@ -1235,7 +1268,6 @@ function pageMore(){
 }
 function pageAbout(){
   return `<div class="info">
-    <button class="back sub-back" data-goview="more">More</button>
     <h1>About Vax Gap</h1>
     <p class="lead">Vax Gap helps practice nurses plan catch-up vaccines for children and adults whose records are missing or incomplete, such as people who have just arrived in the UK.</p>
     <h2>How it works</h2>
@@ -1260,7 +1292,6 @@ function pageAbout(){
 function pageUpdates(){
   const item = (iso,label,title,text,soon)=>`<li${soon?' class="soon"':''}><time datetime="${iso}">${label}</time><div><b>${title}</b><span>${text}</span></div></li>`;
   return `<div class="info">
-    <button class="back sub-back" data-goview="more">More</button>
     <h1>Guidance updates</h1>
     <p class="lead">Changes to the UKHSA guidance Vax Gap follows.</p>
     <ul class="log">
