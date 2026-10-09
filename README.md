@@ -38,3 +38,7 @@ The tests run nurse-supplied cases through the scheduling rules and print the pl
 
 - UKHSA, Complete routine immunisation schedule
 - UKHSA, Vaccination of individuals with uncertain or incomplete immunisation status
+
+## Hosting
+
+Served from GitHub Pages (Settings, Pages, deploy from the `main` branch, root folder). The page has a `noindex` tag so search engines leave it out.
