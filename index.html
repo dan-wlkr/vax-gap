@@ -205,6 +205,16 @@ body{margin:0;font-family:var(--body);-webkit-font-smoothing:antialiased;-moz-os
 .info p,.info li{line-height:1.55}
 .info ul{padding-left:20px;margin:0 0 18px}
 .info li{margin-bottom:6px}
+.info .anchor{scroll-margin-top:96px}
+.info .sch{list-style:none;margin:0 0 8px;padding:0;border-top:1px solid var(--line)}
+.info .sch > li{display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;padding:14px 0;margin:0;border-bottom:1px solid var(--line)}
+.sch-age{font-weight:700;font-family:var(--display)}
+.info .sch-items{list-style:none;margin:0;padding:0}
+.info .sch-items li{margin:0 0 8px}
+.info .sch-items li:last-child{margin-bottom:0}
+.sch-items b{display:block}
+.sch-items span{display:block;color:var(--grey);font-size:15px;line-height:1.45}
+@media (max-width:480px){ .info .sch > li{grid-template-columns:1fr;gap:6px} .sch-age{font-size:14px;color:var(--amber)} }
 .info .log{list-style:none;margin:0 0 8px;padding:0;border-top:1px solid var(--line)}
 .info .log li{display:grid;grid-template-columns:116px minmax(0,1fr);gap:16px;padding:14px 0;border-bottom:1px solid var(--line);margin:0}
 .log time{font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;padding-top:2px}
@@ -482,8 +492,8 @@ label.block{display:block;font-weight:700;margin-bottom:4px}
     <button class="burger" id="burger" aria-expanded="false" aria-controls="appnav" aria-label="Menu"><span></span><span></span><span></span></button>
     <nav class="appnav" id="appnav" aria-label="Main">
       <button data-view="home" aria-current="page">Home</button>
-      <button data-view="about">About</button>
-      <button data-view="updates">Updates</button>
+      <button data-view="schedule">Schedule</button>
+      <button data-view="more">More</button>
       <button data-view="check" class="nav-cta">Vaccine Checker</button>
     </nav>
   </div></div>
@@ -504,9 +514,9 @@ label.block{display:block;font-weight:700;margin-bottom:4px}
 
   <nav class="tabbar" id="tabbar" aria-label="Main">
     <button data-view="home" aria-current="page"><span class="tb-ico"><svg viewBox="0 0 24 24"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/></svg></span><span class="tb-lbl">Home</span></button>
-    <button data-view="about"><span class="tb-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5M12 7.8v.01"/></svg></span><span class="tb-lbl">About</span></button>
-    <button data-view="updates"><span class="tb-ico"><svg viewBox="0 0 24 24"><path d="M6.5 16.5V11a5.5 5.5 0 0 1 11 0v5.5l1.5 1.5H5z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg></span><span class="tb-lbl">Updates</span></button>
     <button data-view="check" class="tb-cta"><span class="tb-ico"><svg viewBox="0 0 24 24"><path d="m17 3 4 4M19 5l-3 3M15.5 6.5l2 2M14 5l5 5-8.5 8.5H5.5v-5z"/><path d="M8.5 10.5l2 2M11 8l2 2M3 21l2.5-2.5"/></svg></span><span class="tb-lbl">Checker</span></button>
+    <button data-view="schedule"><span class="tb-ico"><svg viewBox="0 0 24 24"><rect x="4" y="5.5" width="16" height="14.5" rx="2"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4M8 13.5h2M14 13.5h2M8 16.8h2"/></svg></span><span class="tb-lbl">Schedule</span></button>
+    <button data-view="more"><span class="tb-ico"><svg viewBox="0 0 24 24"><circle cx="6" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18" cy="12" r="1.6"/></svg></span><span class="tb-lbl">More</span></button>
   </nav>
   <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
   <div class="dialog" id="confirm" hidden role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle" aria-describedby="confirmBody">
@@ -1119,9 +1129,12 @@ function setView(v, trigger){
     if(hasProgress()){ askLeave(v, trigger || document.activeElement); return; }
     state = fresh();
   }
+  const anchor = v==='updates' ? 'updates' : null;
+  if(v==='about' || v==='updates') v = 'more';
   view = v;
   document.querySelectorAll('.appnav [data-view], .tabbar [data-view]').forEach(b=> b.dataset.view===v ? b.setAttribute('aria-current','page') : b.removeAttribute('aria-current'));
   window.scrollTo(0,0); render(); $('main').focus({preventScroll:true});
+  if(anchor){ const a=document.getElementById(anchor); if(a) a.scrollIntoView({block:'start'}); }
 }
 function closeMenu(){ $('appnav').classList.remove('open'); $('burger').setAttribute('aria-expanded','false'); }
 $('burger').onclick = ()=>{ const open = !$('appnav').classList.contains('open'); $('appnav').classList.toggle('open', open); $('burger').setAttribute('aria-expanded', open); if(open) $('appnav').querySelector('[aria-current]')?.focus(); };
@@ -1150,7 +1163,7 @@ function render(){
   if(view!=='check') $('phone').classList.remove('is-card');
   $('phone').classList.toggle('is-home', view==='home');
   $('heroSlot').innerHTML = view==='home' ? heroHome() : '';
-  if(view!=='check'){ $('pageTitle').innerHTML=''; $('phone').classList.remove('is-results'); m.innerHTML = view==='home' ? pageHome() : view==='about' ? pageAbout() : pageUpdates(); return; }
+  if(view!=='check'){ $('pageTitle').innerHTML=''; $('phone').classList.remove('is-results'); m.innerHTML = view==='home' ? pageHome() : view==='schedule' ? pageSchedule() : pageMore(); return; }
   $('navBack').hidden = state.step===0;
   $('navBack').textContent = key==='results' ? 'Edit answers' : 'Back';
   // Progress only applies to the vaccine pages
@@ -1200,7 +1213,8 @@ function pageHome(){
   
   </div>`;
 }
-function pageAbout(){
+function pageMore(){
+  const item = (iso,label,title,text,soon)=>`<li${soon?' class="soon"':''}><time datetime="${iso}">${label}</time><div><b>${title}</b><span>${text}</span></div></li>`;
   return `<div class="info">
     <h1>About Vax Gap</h1>
     <p class="lead">Vax Gap helps practice nurses plan catch-up vaccines for children and adults whose records are missing or incomplete, such as people who have just arrived in the UK.</p>
@@ -1221,13 +1235,8 @@ function pageAbout(){
     <p>Nothing is saved or sent anywhere. Answers stay on this screen until you clear them or close the page. The patient handout comes in 17 languages, built into the page. They're drafts made with Claude and haven't yet been checked by a translator.</p>
     <h2>Status</h2>
     <p>Vax Gap is a prototype and isn't for clinical use. Always check a plan against the Green Book and your local screening and immunisation team.</p>
-  </div>`;
-}
-function pageUpdates(){
-  const item = (iso,label,title,text,soon)=>`<li${soon?' class="soon"':''}><time datetime="${iso}">${label}</time><div><b>${title}</b><span>${text}</span></div></li>`;
-  return `<div class="info">
-    <h1>Updates</h1>
-    <p class="lead">Changes to the UKHSA guidance Vax Gap follows.</p>
+    <h2 id="updates" class="anchor">Guidance updates</h2>
+    <p>Changes to the UKHSA guidance Vax Gap follows.</p>
     <ul class="log">
       ${item('2026-11-01','1 Nov 2026','MMRV chickenpox catch-up starts','Children born 1 January 2020 to 31 August 2022 are offered one MMRV dose, until 31 March 2028.',true)}
       ${item('2026-12-31','31 Dec 2026','Last date for a first dose in the MenB time-limited offer','Second doses can be given until 31 March 2027.',true)}
@@ -1239,6 +1248,45 @@ function pageUpdates(){
       ${item('2026-01-01','1 Jan 2026','MMRV replaces MMR and new 18 month appointment','MMRV at 12 and 18 months. A fourth 6-in-1 dose at 18 months for children born from 1 July 2024.')}
       ${item('2025-07-01','1 Jul 2025','Infant schedule changes','Second MenB moved to 12 weeks and PCV to 16 weeks. Hib/MenC stopped for children born from 1 July 2024.')}
     </ul>
+    <h2>Clinical responsibility</h2>
+    <p>This tool supports, but does not replace, clinical judgement. Always check results against the current Green Book and UKHSA guidance before vaccinating. The person giving the vaccine remains responsible for the decision and must be working under a valid PGD, PSD or prescription.</p>
+  </div>`;
+}
+function pageSchedule(){
+  const row = (age, items)=>`<li><span class="sch-age">${age}</span><ul class="sch-items">${items.map(([n,w])=>`<li><b>${n}</b><span>${w}</span></li>`).join('')}</ul></li>`;
+  return `<div class="info schedule">
+    <h1>UK routine schedule</h1>
+    <p class="lead">Quick reference for England, from the UKHSA routine schedule. Check the Green Book for full details.</p>
+    <h2>Babies and children</h2>
+    <ul class="sch">
+      ${row('8 weeks',[['6-in-1','Diphtheria, tetanus, whooping cough, polio, Hib, hepatitis B'],['Rotavirus','Sickness and diarrhoea'],['MenB','Meningitis B']])}
+      ${row('12 weeks',[['6-in-1','2nd dose'],['Rotavirus','2nd dose'],['MenB','2nd dose']])}
+      ${row('16 weeks',[['6-in-1','3rd dose'],['Pneumococcal (PCV)','Pneumonia, meningitis, sepsis']])}
+      ${row('1 year',[['MenB','Booster'],['PCV','Booster'],['MMRV','Measles, mumps, rubella, chickenpox. 1st dose']])}
+      ${row('18 months',[['6-in-1','4th dose, for children born from 1 July 2024'],['MMRV','2nd dose']])}
+      ${row('2 to 3 years',[['Flu (nasal spray)','Every autumn, for children aged 2 or 3 on 31 August']])}
+      ${row('3 years 4 months',[['4-in-1 pre-school booster','Diphtheria, tetanus, whooping cough, polio']])}
+    </ul>
+    <h2>School programmes</h2>
+    <ul class="sch">
+      ${row('Reception to Year 11',[['Flu (nasal spray)','Every autumn, given at school']])}
+      ${row('Year 8',[['HPV','1 dose']])}
+      ${row('Year 9',[['Td/IPV','Tetanus, diphtheria, polio. Teenage booster'],['MenACWY','Meningitis A, C, W and Y']])}
+    </ul>
+    <h2>Adults</h2>
+    <ul class="sch">
+      ${row('65 years',[['Pneumococcal (PPV23)','1 dose'],['Shingles (Shingrix)','2 doses, 6 to 12 months apart'],['Flu','Every autumn']])}
+      ${row('75 years',[['RSV','1 dose']])}
+    </ul>
+    <h2>Spacing in catch-up plans</h2>
+    <ul>
+      <li>Doses of the same vaccine in a course are usually at least 4 weeks apart.</li>
+      <li>Count the day a dose is given as day 0. A 4 week gap means the next dose is due on day 28, never earlier.</li>
+      <li>MMR or MMRV and other live vaccines are given on the same day or at least 4 weeks apart.</li>
+      <li>From age 10, Td/IPV replaces 6-in-1 for catch-up.</li>
+      <li>Anyone with no reliable record is treated as unvaccinated.</li>
+    </ul>
+    <p class="small">Vax Gap uses these rules in its plans. This page doesn't cover risk groups, pregnancy or immunosuppression.</p>
   </div>`;
 }
 function go(i){ view='check'; document.querySelectorAll('.appnav [data-view], .tabbar [data-view]').forEach(b=> b.dataset.view==='check' ? b.setAttribute('aria-current','page') : b.removeAttribute('aria-current')); state.step=i; state.errors=null; window.scrollTo(0,0); render(); if(!$('errSummary')) $('main').focus({preventScroll:true}); }
