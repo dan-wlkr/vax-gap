@@ -205,7 +205,17 @@ body{margin:0;font-family:var(--body);-webkit-font-smoothing:antialiased;-moz-os
 .info p,.info li{line-height:1.55}
 .info ul{padding-left:20px;margin:0 0 18px}
 .info li{margin-bottom:6px}
-.info .anchor{scroll-margin-top:96px}
+.info .more-list{list-style:none;margin:0 0 8px;padding:0;background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.info .more-list li{margin:0}
+.more-list li + li{border-top:1px solid var(--line)}
+.more-link{display:flex;align-items:center;gap:12px;width:100%;padding:16px 18px;border:0;background:none;font:inherit;color:var(--ink);text-align:left;cursor:pointer}
+.more-link:hover{background:#F6F8FA}
+.more-link:focus-visible{outline:3px solid var(--focus);outline-offset:-3px}
+.more-link > span{flex:1;min-width:0}
+.more-link b{display:block;font-size:17px;margin-bottom:2px}
+.more-link > span > span{display:block;color:var(--grey);font-size:15px;line-height:1.4}
+.more-chev{flex:none;width:20px;height:20px;fill:none;stroke:var(--grey);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.sub-back{margin:0 0 24px}
 .info .sch{list-style:none;margin:0 0 8px;padding:0;border-top:1px solid var(--line)}
 .info .sch > li{display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;padding:14px 0;margin:0;border-bottom:1px solid var(--line)}
 .sch-age{font-weight:700;font-family:var(--display)}
@@ -1129,12 +1139,10 @@ function setView(v, trigger){
     if(hasProgress()){ askLeave(v, trigger || document.activeElement); return; }
     state = fresh();
   }
-  const anchor = v==='updates' ? 'updates' : null;
-  if(v==='about' || v==='updates') v = 'more';
   view = v;
-  document.querySelectorAll('.appnav [data-view], .tabbar [data-view]').forEach(b=> b.dataset.view===v ? b.setAttribute('aria-current','page') : b.removeAttribute('aria-current'));
+  const navV = (v==='about' || v==='updates') ? 'more' : v;
+  document.querySelectorAll('.appnav [data-view], .tabbar [data-view]').forEach(b=> b.dataset.view===navV ? b.setAttribute('aria-current','page') : b.removeAttribute('aria-current'));
   window.scrollTo(0,0); render(); $('main').focus({preventScroll:true});
-  if(anchor){ const a=document.getElementById(anchor); if(a) a.scrollIntoView({block:'start'}); }
 }
 function closeMenu(){ $('appnav').classList.remove('open'); $('burger').setAttribute('aria-expanded','false'); }
 $('burger').onclick = ()=>{ const open = !$('appnav').classList.contains('open'); $('appnav').classList.toggle('open', open); $('burger').setAttribute('aria-expanded', open); if(open) $('appnav').querySelector('[aria-current]')?.focus(); };
@@ -1163,7 +1171,7 @@ function render(){
   if(view!=='check') $('phone').classList.remove('is-card');
   $('phone').classList.toggle('is-home', view==='home');
   $('heroSlot').innerHTML = view==='home' ? heroHome() : '';
-  if(view!=='check'){ $('pageTitle').innerHTML=''; $('phone').classList.remove('is-results'); m.innerHTML = view==='home' ? pageHome() : view==='schedule' ? pageSchedule() : pageMore(); return; }
+  if(view!=='check'){ $('pageTitle').innerHTML=''; $('phone').classList.remove('is-results'); m.innerHTML = view==='home' ? pageHome() : view==='schedule' ? pageSchedule() : view==='about' ? pageAbout() : view==='updates' ? pageUpdates() : pageMore(); return; }
   $('navBack').hidden = state.step===0;
   $('navBack').textContent = key==='results' ? 'Edit answers' : 'Back';
   // Progress only applies to the vaccine pages
@@ -1214,8 +1222,20 @@ function pageHome(){
   </div>`;
 }
 function pageMore(){
-  const item = (iso,label,title,text,soon)=>`<li${soon?' class="soon"':''}><time datetime="${iso}">${label}</time><div><b>${title}</b><span>${text}</span></div></li>`;
+  const link = (v,title,text)=>`<li><button class="more-link" data-goview="${v}"><span><b>${title}</b><span>${text}</span></span><svg class="more-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></button></li>`;
   return `<div class="info">
+    <h1>More</h1>
+    <ul class="more-list">
+      ${link('about','About Vax Gap','How it works, where the rules come from and what it doesn\'t cover')}
+      ${link('updates','Guidance updates','Recent and upcoming changes to UKHSA guidance')}
+    </ul>
+    <h2>Clinical responsibility</h2>
+    <p>This tool supports, but does not replace, clinical judgement. Always check results against the current Green Book and UKHSA guidance before vaccinating. The person giving the vaccine remains responsible for the decision and must be working under a valid PGD, PSD or prescription.</p>
+  </div>`;
+}
+function pageAbout(){
+  return `<div class="info">
+    <button class="back sub-back" data-goview="more">More</button>
     <h1>About Vax Gap</h1>
     <p class="lead">Vax Gap helps practice nurses plan catch-up vaccines for children and adults whose records are missing or incomplete, such as people who have just arrived in the UK.</p>
     <h2>How it works</h2>
@@ -1235,8 +1255,14 @@ function pageMore(){
     <p>Nothing is saved or sent anywhere. Answers stay on this screen until you clear them or close the page. The patient handout comes in 17 languages, built into the page. They're drafts made with Claude and haven't yet been checked by a translator.</p>
     <h2>Status</h2>
     <p>Vax Gap is a prototype and isn't for clinical use. Always check a plan against the Green Book and your local screening and immunisation team.</p>
-    <h2 id="updates" class="anchor">Guidance updates</h2>
-    <p>Changes to the UKHSA guidance Vax Gap follows.</p>
+  </div>`;
+}
+function pageUpdates(){
+  const item = (iso,label,title,text,soon)=>`<li${soon?' class="soon"':''}><time datetime="${iso}">${label}</time><div><b>${title}</b><span>${text}</span></div></li>`;
+  return `<div class="info">
+    <button class="back sub-back" data-goview="more">More</button>
+    <h1>Guidance updates</h1>
+    <p class="lead">Changes to the UKHSA guidance Vax Gap follows.</p>
     <ul class="log">
       ${item('2026-11-01','1 Nov 2026','MMRV chickenpox catch-up starts','Children born 1 January 2020 to 31 August 2022 are offered one MMRV dose, until 31 March 2028.',true)}
       ${item('2026-12-31','31 Dec 2026','Last date for a first dose in the MenB time-limited offer','Second doses can be given until 31 March 2027.',true)}
@@ -1248,8 +1274,6 @@ function pageMore(){
       ${item('2026-01-01','1 Jan 2026','MMRV replaces MMR and new 18 month appointment','MMRV at 12 and 18 months. A fourth 6-in-1 dose at 18 months for children born from 1 July 2024.')}
       ${item('2025-07-01','1 Jul 2025','Infant schedule changes','Second MenB moved to 12 weeks and PCV to 16 weeks. Hib/MenC stopped for children born from 1 July 2024.')}
     </ul>
-    <h2>Clinical responsibility</h2>
-    <p>This tool supports, but does not replace, clinical judgement. Always check results against the current Green Book and UKHSA guidance before vaccinating. The person giving the vaccine remains responsible for the decision and must be working under a valid PGD, PSD or prescription.</p>
   </div>`;
 }
 function pageSchedule(){
