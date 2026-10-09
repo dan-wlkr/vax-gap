@@ -48,8 +48,8 @@ body{margin:0;font-family:var(--body);-webkit-font-smoothing:antialiased;-moz-os
 .appnav button{position:relative;display:flex;align-items:center;padding:0 12px;border:0;background:none;font:inherit;font-family:var(--display);font-size:15px;font-weight:500;color:rgba(17,17,17,.68);cursor:pointer;white-space:nowrap}
 .appnav button:hover{color:var(--ink-nav)}
 .appnav button[aria-current="page"]{color:var(--ink-nav);font-weight:700}
-.appnav .nav-cta{align-self:center;margin-left:10px;padding:9px 16px;border-radius:8px;background:var(--ink-nav);color:#FFFFFF;font-weight:600}
-.appnav .nav-cta:hover{color:#FFFFFF;background:#2A2A2A}
+.appnav .nav-cta{align-self:center;margin-left:10px;padding:9px 16px;border-radius:8px;background:var(--ink);color:#FFFFFF;font-weight:600}
+.appnav .nav-cta:hover{color:#FFFFFF;background:#22355A}
 .appnav .nav-cta[aria-current="page"]{color:#FFFFFF;font-weight:600}
 .appnav button:focus-visible,.brand:focus-visible{outline:2px solid var(--ink-nav);outline-offset:-2px;border-radius:6px}
 /* burger menu on phones */
@@ -66,7 +66,7 @@ body{margin:0;font-family:var(--body);-webkit-font-smoothing:antialiased;-moz-os
   .appnav.open{display:flex}
   .appnav button{padding:14px var(--gutter);font-size:17px;justify-content:flex-start}
   .appnav button[aria-current="page"]{background:rgba(255,255,255,.3);box-shadow:inset 4px 0 0 var(--ink-nav)}
-  .appnav .nav-cta,.appnav .nav-cta[aria-current="page"]{align-self:stretch;justify-content:center;margin:10px var(--gutter) 4px;padding:14px 16px;border-radius:8px;background:var(--ink-nav);color:#FFFFFF;box-shadow:none}
+  .appnav .nav-cta,.appnav .nav-cta[aria-current="page"]{align-self:stretch;justify-content:center;margin:10px var(--gutter) 4px;padding:14px 16px;border-radius:8px;background:var(--ink);color:#FFFFFF;box-shadow:none}
   .logo{font-size:20px}
 }
 @media (prefers-reduced-motion:reduce){ .burger span{transition:none} }
@@ -453,7 +453,7 @@ label.block{display:block;font-weight:700;margin-bottom:4px}
 .appbar-cta{display:none}
 @media (max-width:640px){
   .burger,.appnav{display:none!important}
-  .appbar-cta{display:inline-flex;align-items:center;margin-left:auto;padding:9px 14px;border:0;border-radius:8px;background:var(--ink-nav);color:#FFFFFF;font:inherit;font-family:var(--display);font-size:15px;font-weight:600;line-height:1.2;white-space:nowrap;cursor:pointer}
+  .appbar-cta{display:inline-flex;align-items:center;margin-left:auto;padding:9px 14px;border:0;border-radius:8px;background:var(--ink);color:#FFFFFF;font:inherit;font-family:var(--display);font-size:15px;font-weight:600;line-height:1.2;white-space:nowrap;cursor:pointer}
   .appbar-cta:focus-visible{outline:2px solid var(--ink-nav);outline-offset:2px}
   .tabbar{position:fixed;left:0;right:0;bottom:0;z-index:7;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:end;background:#FFFFFF;border-top:1px solid var(--line);box-shadow:0 -6px 16px -12px var(--shadow);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px))}
   .tabbar button{display:flex;flex-direction:column;align-items:center;gap:3px;min-height:52px;padding:4px 2px;border:0;background:none;font:inherit;font-family:var(--display);font-size:11.5px;font-weight:500;line-height:1.15;color:var(--grey);cursor:pointer;border-radius:10px;text-align:center;white-space:nowrap}
