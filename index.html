@@ -242,7 +242,11 @@ body{margin:0;font-family:var(--body);-webkit-font-smoothing:antialiased;-moz-os
 .info .gov-related a:focus-visible{outline:3px solid transparent;color:#0b0c0c;background:var(--focus);box-shadow:0 -2px var(--focus),0 4px #0b0c0c;text-decoration:none}
 .info .sch{list-style:none;margin:0 0 8px;padding:0;border-top:1px solid var(--line)}
 .info .sch > li{display:grid;grid-template-columns:170px minmax(0,1fr);gap:16px;padding:14px 16px;margin:0;border-bottom:1px solid var(--line)}
-.info .sch > li:nth-child(odd){background:rgba(255,255,255,.6)}
+.sch-table{background:var(--card);border:1px solid #C5CEDB;border-radius:12px;overflow:hidden;margin:24px 0 0}
+.info .sch-table .sch-h{margin:0;padding:12px 16px;background:#E1E7EF;border-bottom:1px solid #C5CEDB;font-size:17px}
+.info .sch-table .sch{border-top:0;margin:0}
+.info .sch-table .sch > li:nth-child(even){background:#F4F6F9}
+.info .sch-table .sch > li:last-child{border-bottom:0}
 .sch-age{font-weight:700;font-family:var(--display)}
 .info .sch-items{list-style:none;margin:0;padding:0}
 .info .sch-items li{margin:0 0 10px;display:grid;grid-template-columns:minmax(0,1fr) fit-content(45%);gap:16px;align-items:baseline}
@@ -1348,6 +1352,7 @@ function pageSchedule(){
       </ul>
     </nav>
     <h2 class="qg-title">Quick guide</h2>
+    <section class="sch-table">
     <h3 class="sch-h">Babies and children</h3>
     <ul class="sch">
       ${row('8 weeks',[['6-in-1','1st dose','Diphtheria, tetanus, whooping cough, polio, Hib, hepatitis B'],['Rotavirus','1st dose','Sickness and diarrhoea'],['MenB','1st dose','Meningitis B']])}
@@ -1358,17 +1363,22 @@ function pageSchedule(){
       ${row('2 to 3 years',[['Flu (nasal spray)','Every autumn, for children aged 2 or 3 on 31 August']])}
       ${row('3 years 4 months',[['4-in-1','Pre-school booster','Diphtheria, tetanus, whooping cough, polio']])}
     </ul>
+    </section>
+    <section class="sch-table">
     <h3 class="sch-h">School programmes</h3>
     <ul class="sch">
       ${row('Reception to Year 11',[['Flu (nasal spray)','Every autumn, given at school']])}
       ${row('Year 8',[['HPV','1 dose','Cancers caused by HPV']])}
       ${row('Year 9',[['Td/IPV','Teenage booster','Tetanus, diphtheria, polio'],['MenACWY','1 dose','Meningitis A, C, W and Y']])}
     </ul>
+    </section>
+    <section class="sch-table">
     <h3 class="sch-h">Adults</h3>
     <ul class="sch">
       ${row('65 years',[['Pneumococcal (PPV23)','1 dose','Pneumonia, meningitis, sepsis'],['Shingles (Shingrix)','2 doses, 6 to 12 months apart'],['Flu','Every autumn']])}
       ${row('75 years',[['RSV','1 dose','Respiratory syncytial virus']])}
     </ul>
+    </section>
     <h3 class="sch-h">Spacing in catch-up plans</h3>
     <ul>
       <li>Doses of the same vaccine in a course are usually at least 4 weeks apart.</li>
