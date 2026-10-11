@@ -256,12 +256,11 @@ body{margin:0;font-family:var(--body);-webkit-font-smoothing:antialiased;-moz-os
 .sch-items span{display:block;color:#46536B;font-size:16px;line-height:1.45}
 @media (max-width:640px){ .info .sch > li{grid-template-columns:1fr;gap:6px} .sch-age{font-size:14px;color:var(--amber)} .info .sch > li{padding:12px} }
 .info .log{list-style:none;margin:0 0 8px;padding:0;border-top:1px solid var(--line)}
-.info .gov-related + .log{margin-top:32px}
+.info .log + .gov-related{margin-top:32px}
 .info .log li{display:grid;grid-template-columns:116px minmax(0,1fr);gap:16px;padding:14px 0;border-bottom:1px solid var(--line);margin:0}
 .log time{font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;padding-top:2px}
 .log b{display:block;margin-bottom:2px}
 .log span{font-size:15px;color:var(--grey);line-height:1.5}
-.log .soon time{color:var(--amber)}
 @media (max-width:480px){ .info .log li{grid-template-columns:1fr;gap:4px} }
 .info a{color:var(--ink);font-weight:700}
 #nav{background:rgba(236,239,243,.88);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);padding-block:18px 16px}
@@ -1315,20 +1314,13 @@ function pageAbout(){
   </div>`;
 }
 function pageUpdates(){
-  const item = (iso,label,title,text,soon)=>`<li${soon?' class="soon"':''}><time datetime="${iso}">${label}</time><div><b>${title}</b><span>${text}</span></div></li>`;
+  const item = (iso,label,title,text)=>`<li><time datetime="${iso}">${label}</time><div><b>${title}</b><span>${text}</span></div></li>`;
   return `<div class="info">
     <h1>Guidance updates</h1>
     <p class="lead">Changes to the UKHSA guidance Vax Gap follows.</p>
-    <nav class="gov-related" aria-labelledby="relHead">
-      <h2 id="relHead">Official guidance</h2>
-      <ul>
-        <li><a href="https://www.gov.uk/government/publications/the-complete-routine-immunisation-schedule" target="_blank" rel="noopener">Complete routine immunisation schedule<span class="vh"> (opens in new tab)</span></a><p>UKHSA timings for every routine vaccine, from 8 weeks to 75 years.</p></li>
-        <li><a href="https://www.gov.uk/government/collections/immunisation-against-infectious-disease-the-green-book" target="_blank" rel="noopener">Immunisation against infectious disease: the Green Book<span class="vh"> (opens in new tab)</span></a><p>Chapters on each vaccine, including doses, spacing and who should have it.</p></li>
-      </ul>
-    </nav>
     <ul class="log">
-      ${item('2026-11-01','1 Nov 2026','MMRV chickenpox catch-up starts','Children born 1 January 2020 to 31 August 2022 are offered one MMRV dose, until 31 March 2028.',true)}
-      ${item('2026-12-31','31 Dec 2026','Last date for a first dose in the MenB time-limited offer','Second doses can be given until 31 March 2027.',true)}
+      ${item('2026-11-01','1 Nov 2026','MMRV chickenpox catch-up starts','Children born 1 January 2020 to 31 August 2022 are offered one MMRV dose, until 31 March 2028.')}
+      ${item('2026-12-31','31 Dec 2026','Last date for a first dose in the MenB time-limited offer','Second doses can be given until 31 March 2027.')}
       ${item('2026-10-01','1 Oct 2026','Uncertain or incomplete immunisation algorithm updated','UKHSA updated the algorithm Vax Gap follows for catch-up plans.')}
       ${item('2026-09-24','24 Sep 2026','Complete routine schedule from September 2026','New version of the UK routine schedule published.')}
       ${item('2026-08-25','25 Aug 2026','MMRV guidance for healthcare professionals updated','Covers eligibility by date of birth and what to give children who are behind.')}
@@ -1337,6 +1329,13 @@ function pageUpdates(){
       ${item('2026-01-01','1 Jan 2026','MMRV replaces MMR and new 18 month appointment','MMRV at 12 and 18 months. A fourth 6-in-1 dose at 18 months for children born from 1 July 2024.')}
       ${item('2025-07-01','1 Jul 2025','Infant schedule changes','Second MenB moved to 12 weeks and PCV to 16 weeks. Hib/MenC stopped for children born from 1 July 2024.')}
     </ul>
+    <nav class="gov-related" aria-labelledby="relHead">
+      <h2 id="relHead">Official guidance</h2>
+      <ul>
+        <li><a href="https://www.gov.uk/government/publications/the-complete-routine-immunisation-schedule" target="_blank" rel="noopener">Complete routine immunisation schedule<span class="vh"> (opens in new tab)</span></a><p>UKHSA timings for every routine vaccine, from 8 weeks to 75 years.</p></li>
+        <li><a href="https://www.gov.uk/government/collections/immunisation-against-infectious-disease-the-green-book" target="_blank" rel="noopener">Immunisation against infectious disease: the Green Book<span class="vh"> (opens in new tab)</span></a><p>Chapters on each vaccine, including doses, spacing and who should have it.</p></li>
+      </ul>
+    </nav>
   </div>`;
 }
 function pageSchedule(){
