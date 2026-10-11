@@ -1,6 +1,6 @@
 # Vax Gap
 
-A prototype for practice nurses planning catch-up vaccines for children and adults whose records are missing or incomplete, such as people who have just arrived in the UK.
+A prototype for clinicians planning catch-up vaccines for children and adults whose records are missing or incomplete, such as people who have just arrived in the UK.
 
 Prototype only. Not for clinical use.
 

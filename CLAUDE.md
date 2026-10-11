@@ -1,6 +1,6 @@
 # Vax Gap
 
-Prototype for UK practice nurses planning catch-up vaccines for children and adults with missing or incomplete records. Not for clinical use.
+Prototype for UK clinicians planning catch-up vaccines for children and adults with missing or incomplete records. Not for clinical use.
 
 ## Setup
 
