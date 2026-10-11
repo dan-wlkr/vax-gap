@@ -20,6 +20,6 @@ Prototype for UK practice nurses planning catch-up vaccines for children and adu
 ## Design
 
 - Dan is a UX designer. Keep GOV.UK patterns for forms, errors and links. Yellow app bar (#FFB320), ink navy (#14233F), grey page (#ECEFF3), white cards.
-- Desktop: top nav (Home, Schedule, More menu, Vaccine Checker button). Mobile: bottom tabs (Home, Checker, Schedule, More pop-up).
+- Desktop: top nav (Home, About, Updates, Vaccine Checker button). Mobile: bottom tabs (Home, Checker, About, Updates). The Schedule page and More menu are hidden for now; their code is still in `index.html`.
 - Check changes at desktop (1280) and phone (375) widths before pushing.
 - Copy: short, plain, UK English, no dashes.

@@ -256,6 +256,7 @@ body{margin:0;font-family:var(--body);-webkit-font-smoothing:antialiased;-moz-os
 .sch-items span{display:block;color:#46536B;font-size:16px;line-height:1.45}
 @media (max-width:640px){ .info .sch > li{grid-template-columns:1fr;gap:6px} .sch-age{font-size:14px;color:var(--amber)} .info .sch > li{padding:12px} }
 .info .log{list-style:none;margin:0 0 8px;padding:0;border-top:1px solid var(--line)}
+.info .gov-related + .log{margin-top:32px}
 .info .log li{display:grid;grid-template-columns:116px minmax(0,1fr);gap:16px;padding:14px 0;border-bottom:1px solid var(--line);margin:0}
 .log time{font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;padding-top:2px}
 .log b{display:block;margin-bottom:2px}
@@ -543,8 +544,8 @@ label.block{display:block;font-weight:700;margin-bottom:4px}
     <button class="burger" id="burger" aria-expanded="false" aria-controls="appnav" aria-label="Menu"><span></span><span></span><span></span></button>
     <nav class="appnav" id="appnav" aria-label="Main">
       <button data-view="home" aria-current="page">Home</button>
-      <button data-view="schedule">Schedule</button>
-      <button data-view="more" aria-haspopup="true" aria-expanded="false" aria-controls="moreMenu">More<svg class="nav-caret" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg></button>
+      <button data-view="about">About</button>
+      <button data-view="updates">Updates</button>
       <button data-view="check" class="nav-cta">Vaccine Checker</button>
     </nav>
   </div></div>
@@ -562,8 +563,8 @@ label.block{display:block;font-weight:700;margin-bottom:4px}
   <nav class="tabbar" id="tabbar" aria-label="Main">
     <button data-view="home" aria-current="page"><span class="tb-ico"><svg viewBox="0 0 24 24"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/></svg></span><span class="tb-lbl">Home</span></button>
     <button data-view="check" class="tb-cta"><span class="tb-ico"><svg viewBox="0 0 24 24"><path d="m17 3 4 4M19 5l-3 3M15.5 6.5l2 2M14 5l5 5-8.5 8.5H5.5v-5z"/><path d="M8.5 10.5l2 2M11 8l2 2M3 21l2.5-2.5"/></svg></span><span class="tb-lbl">Checker</span></button>
-    <button data-view="schedule"><span class="tb-ico"><svg viewBox="0 0 24 24"><rect x="4" y="5.5" width="16" height="14.5" rx="2"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4M8 13.5h2M14 13.5h2M8 16.8h2"/></svg></span><span class="tb-lbl">Schedule</span></button>
-    <button data-view="more" aria-haspopup="true" aria-expanded="false" aria-controls="moreMenu"><span class="tb-ico"><svg viewBox="0 0 24 24"><circle cx="6" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18" cy="12" r="1.6"/></svg></span><span class="tb-lbl">More</span></button>
+    <button data-view="about"><span class="tb-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5M12 7.8v.01"/></svg></span><span class="tb-lbl">About</span></button>
+    <button data-view="updates"><span class="tb-ico"><svg viewBox="0 0 24 24"><path d="M6.5 16.5V11a5.5 5.5 0 0 1 11 0v5.5l1.5 1.5H5z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg></span><span class="tb-lbl">Updates</span></button>
   </nav>
   <div class="more-menu" id="moreMenu" hidden>
     <button data-view="about"><span><b>About Vax Gap</b><span>How it works and where the rules come from</span></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></button>
@@ -1181,7 +1182,7 @@ function setView(v, trigger){
     state = fresh();
   }
   view = v;
-  const navV = (v==='about' || v==='updates') ? 'more' : v;
+  const navV = v;
   document.querySelectorAll('.appnav [data-view], .tabbar [data-view]').forEach(b=> b.dataset.view===navV ? b.setAttribute('aria-current','page') : b.removeAttribute('aria-current'));
   window.scrollTo(0,0); render(); $('main').focus({preventScroll:true});
 }
@@ -1318,6 +1319,13 @@ function pageUpdates(){
   return `<div class="info">
     <h1>Guidance updates</h1>
     <p class="lead">Changes to the UKHSA guidance Vax Gap follows.</p>
+    <nav class="gov-related" aria-labelledby="relHead">
+      <h2 id="relHead">Official guidance</h2>
+      <ul>
+        <li><a href="https://www.gov.uk/government/publications/the-complete-routine-immunisation-schedule" target="_blank" rel="noopener">Complete routine immunisation schedule<span class="vh"> (opens in new tab)</span></a><p>UKHSA timings for every routine vaccine, from 8 weeks to 75 years.</p></li>
+        <li><a href="https://www.gov.uk/government/collections/immunisation-against-infectious-disease-the-green-book" target="_blank" rel="noopener">Immunisation against infectious disease: the Green Book<span class="vh"> (opens in new tab)</span></a><p>Chapters on each vaccine, including doses, spacing and who should have it.</p></li>
+      </ul>
+    </nav>
     <ul class="log">
       ${item('2026-11-01','1 Nov 2026','MMRV chickenpox catch-up starts','Children born 1 January 2020 to 31 August 2022 are offered one MMRV dose, until 31 March 2028.',true)}
       ${item('2026-12-31','31 Dec 2026','Last date for a first dose in the MenB time-limited offer','Second doses can be given until 31 March 2027.',true)}
