@@ -462,9 +462,7 @@ header.empty .top-new{display:none}
 .sources a{color:var(--ink);font-weight:700}
 
 /* sheets (notes, handout) */
-.warning-text{display:flex;gap:14px;align-items:center;margin:20px 0 24px;font-size:17px;line-height:1.4;color:var(--ink)}
-.warning-text[hidden]{display:none}
-.warning-text-icon{flex:none;width:34px;height:34px;border-radius:50%;background:var(--ink);color:#FFFFFF;font-family:var(--display);font-size:24px;font-weight:700;line-height:34px;text-align:center}
+#langWarn{margin:20px 0 24px}
 .sheet{position:fixed;inset:0;background:var(--paper);display:flex;flex-direction:column;z-index:9}
 .sheet > main > *{max-width:var(--sitew)}
 @media (min-width:641px){
@@ -609,7 +607,7 @@ label.block{display:block;font-weight:700;margin-bottom:4px}
         <label class="block" for="lang">Language</label>
         <select id="lang"></select>
       </div>
-      <div class="warning-text" id="langWarn" hidden><span class="warning-text-icon" aria-hidden="true">!</span><strong><span class="vh">Warning: </span>This translation hasn't been verified by a translator. Use an interpreter for anything important.</strong></div>
+      <div class="callout" id="langWarn" hidden><strong>Translation not verified.</strong> It hasn't been checked by a translator. Use an interpreter for anything important.</div>
       <div class="doc" id="doc"></div>
     </main>
     <div class="action-bar">
