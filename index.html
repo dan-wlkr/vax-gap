@@ -462,6 +462,9 @@ header.empty .top-new{display:none}
 .sources a{color:var(--ink);font-weight:700}
 
 /* sheets (notes, handout) */
+.warning-text{display:flex;gap:14px;align-items:center;margin:20px 0 24px;font-size:17px;line-height:1.4;color:var(--ink)}
+.warning-text[hidden]{display:none}
+.warning-text-icon{flex:none;width:34px;height:34px;border-radius:50%;background:var(--ink);color:#FFFFFF;font-family:var(--display);font-size:24px;font-weight:700;line-height:34px;text-align:center}
 .sheet{position:fixed;inset:0;background:var(--paper);display:flex;flex-direction:column;z-index:9}
 .sheet > main > *{max-width:var(--sitew)}
 @media (min-width:641px){
@@ -493,7 +496,7 @@ label.block{display:block;font-weight:700;margin-bottom:4px}
 @media print{
   body.printing-handout .app > *:not(#handoutSheet){display:none!important}
   body.printing-handout #handoutSheet{position:static;display:block;background:#fff}
-  body.printing-handout #handoutSheet > .appbar, body.printing-handout #handoutSheet > header, body.printing-handout #handoutSheet .action-bar, body.printing-handout #translateRow, body.printing-handout #langStatus, body.printing-handout #handoutTitle{display:none!important}
+  body.printing-handout #handoutSheet > .appbar, body.printing-handout #handoutSheet > header, body.printing-handout #handoutSheet .action-bar, body.printing-handout #translateRow, body.printing-handout #langWarn, body.printing-handout #langStatus, body.printing-handout #handoutTitle{display:none!important}
   body.printing-handout #handoutSheet main{overflow:visible;padding:0}
   body.printing-handout .doc{border:0;box-shadow:none;padding:0}
 }
@@ -606,6 +609,7 @@ label.block{display:block;font-weight:700;margin-bottom:4px}
         <label class="block" for="lang">Language</label>
         <select id="lang"></select>
       </div>
+      <div class="warning-text" id="langWarn" hidden><span class="warning-text-icon" aria-hidden="true">!</span><strong><span class="vh">Warning: </span>This translation hasn't been verified by a translator. Use an interpreter for anything important.</strong></div>
       <div class="doc" id="doc"></div>
     </main>
     <div class="action-bar">
@@ -1574,6 +1578,7 @@ function renderDoc(d, lang){
   state.docData = {d, lang};
   const doc = $('doc');
   doc.dir = RTL.includes(lang) ? 'rtl' : 'ltr';
+  $('langWarn').hidden = lang==='English';
   doc.innerHTML = `<h3>${esc(d.title)}</h3><p>${esc(d.lead)}</p>`+
     d.sections.map(s=>`<h4>${esc(s.heading)}</h4><ul>${s.items.map(i=>`<li><b dir="auto">${esc(i.name)}</b>${esc(i.what)}</li>`).join('')}</ul>`).join('')+
     (d.flu?`<p>${esc(d.flu)}</p>`:'')+`<p>${esc(d.end)}</p>`+
