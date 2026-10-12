@@ -473,11 +473,12 @@ header.empty .top-new{display:none}
 .sources a{color:var(--ink);font-weight:700}
 
 /* sheets (notes, handout) */
-#langWarn{margin:20px 0 24px}
+#translateRow{margin-bottom:24px}
+#langWarn{margin:-4px 0 24px}
 .sheet{position:fixed;inset:0;background:var(--paper);display:flex;flex-direction:column;z-index:9}
 .sheet > main > *{max-width:var(--sitew)}
 @media (min-width:641px){
-  #translateRow{display:block;max-width:420px}
+  #translateRow{display:block;max-width:420px;margin-bottom:24px}
   #translateRow label{grid-column:1 / -1}
   #translateRow select{margin:0}
   #translateRow #translateBtn{width:auto;padding:0 24px;height:42px}
