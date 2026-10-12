@@ -397,6 +397,7 @@ header.empty .top-new{display:none}
 .vrow .pill{flex:none;margin-top:1px}
 .later{margin-top:28px}
 .later h2{font-size:18px;margin:0 0 10px}
+.later .small{margin:10px 0 0}
 .llist{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
 .llist li{display:grid;grid-template-columns:96px 1fr;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
 .ldate{font-size:14px;font-weight:700;font-feature-settings:"tnum"}
@@ -899,7 +900,8 @@ function evaluate(){
 }
 
 // UKHSA: 4 week gap between visits, fewest visits, resume courses rather than restart.
-// Doses go onto a 4 weekly visit grid from today. Anything more than 12 weeks out goes under "later".
+// Doses go onto a 4 weekly visit grid from today. Anything more than 12 weeks out goes under "later",
+// which only shows the next 2 years.
 const HORIZON = 12;
 function plan(res){
   const T = todayUTC(), visits = {}, lastHexK = {k:-1}; let later = [], lastHex = null;
@@ -944,11 +946,12 @@ function plan(res){
   if(deferPre)
     later.push({...byId.pre, dose:1, when: Math.max(addMonths(T+lastHexK.k*28*DAY, 12), fromDob(mo(40))), note:'At least a year after the last 6-in-1 dose.'});
   // keep the routine list to the next 15 years, so a 30 year old isn't shown their 65th birthday jabs
-  later = later.filter(r=> r.when < addMonths(T,180));
+  const beyond = later.filter(r=> r.when >= addMonths(T,24)).length;
+  later = later.filter(r=> r.when < addMonths(T,24));
   later.sort((x,y)=>x.when-y.when);
   const list = Object.keys(visits).map(Number).sort((x,y)=>x-y)
     .map((k,i)=>({off:k*4, i, date: Math.max(...visits[k].map(x=>x.earliest)), items: visits[k]}));
-  return {visits:list, later};
+  return {visits:list, later, beyond};
 }
 
 // Banner for groups who get flu outside this plan: school-aged children and adults 65 and over
@@ -1164,8 +1167,8 @@ function pageResults(){
 `+
     (fluBanner(a) ? `<div class="flu"><strong>Flu season.</strong> ${fluBanner(a)}</div>` : '')+
     (p.visits.length ? `<div class="visits">${p.visits.map(visitCard).join('')}</div>` : '')+
-    (p.later.length ? `<section class="later" aria-labelledby="laterHead"><h2 id="laterHead">Later, as routine</h2>
-      <ul class="llist">${p.later.map(r=> laterSchool(r) ? `<li><span class="ldate">Year ${r.v.school}</span><span class="lmain"><strong>${esc(r.name)}</strong><span class="what">${esc(r.what)}</span><span class="note">School programme, ${schoolYearText(r.v.school)}. Check nearer the time, as programmes change.</span></span></li>` : `<li><span class="ldate">${short(r.when)}</span><span class="lmain"><strong>${esc(r.name)}</strong><span class="what">${esc(r.what)}</span>${r.note?`<span class="note">${esc(r.note)}</span>`:''}</span></li>`).join('')}</ul></section>` : '')+
+    (p.later.length || p.beyond ? `<section class="later" aria-labelledby="laterHead"><h2 id="laterHead">Later, as routine</h2>
+      ${p.later.length ? '' : '<p class="small">Nothing else due in the next 2 years.</p>'}<ul class="llist">${p.later.map(r=> laterSchool(r) ? `<li><span class="ldate">Year ${r.v.school}</span><span class="lmain"><strong>${esc(r.name)}</strong><span class="what">${esc(r.what)}</span><span class="note">School programme, ${schoolYearText(r.v.school)}. Check nearer the time, as programmes change.</span></span></li>` : `<li><span class="ldate">${short(r.when)}</span><span class="lmain"><strong>${esc(r.name)}</strong><span class="what">${esc(r.what)}</span>${r.note?`<span class="note">${esc(r.note)}</span>`:''}</span></li>`).join('')}</ul>${p.beyond ? '<p class="small">Only the next 2 years are shown. Later routine vaccines, such as school programmes, aren\'t listed.</p>' : ''}</section>` : '')+
     (done.length ? `<details><summary>Up to date (${done.length})</summary>${done.map(r=>item(r,'Done')).join('')}</details>` : '')+
     (na.length ? `<details><summary>Not needed at this age (${na.length})</summary>${na.map(r=>item(r,'')).join('')}</details>` : '')+
     `<div class="result-actions"><button class="btn" data-action="handout">Patient handout</button><button class="btn secondary" data-action="notes">Copy for notes</button></div>
