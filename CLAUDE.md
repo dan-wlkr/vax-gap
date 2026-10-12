@@ -15,6 +15,7 @@ Prototype for UK clinicians planning catch-up vaccines for children and adults w
 - Dates are UTC midnight timestamps. The day a dose is given is day 0, so a 4 week gap means the next dose is due on day 28, never earlier.
 - School programmes go by school year (1 September start), not birthday.
 - MenB 2026 offer: ask which brand (Bexsero or Trumenba) and dose dates; brands aren't interchangeable.
+- Other vaccines (often from abroad) are entered as dated doses from the `ABROAD` list and judged in `abroadInfo()`. A 6-in-1 or Td/IPV dose needs diphtheria, tetanus and polio on the same day; OPV only counts before April 2016. Measles only, MR and any measles dose before age 1 don't count. Live vaccines push MMR or MMRV 4 weeks later.
 - Flag anything that conflicts with UKHSA guidance rather than silently changing it.
 
 ## Design
