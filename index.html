@@ -24,6 +24,8 @@
   --display:'Instrument Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif; --body:'Instrument Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;
 }
 *{box-sizing:border-box}
+/* Always keep room for the scrollbar, so pages that don't scroll (like Home) line up with ones that do */
+html{scrollbar-gutter:stable;background:var(--bg)}
 /* no single words left alone on the last line */
 p,li,dd,dt,label,legend,.lead,.hint,.small,td,th,blockquote{text-wrap:pretty}
 h1,h2,h3,h4{text-wrap:balance}
