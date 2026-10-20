@@ -24,8 +24,6 @@
   --display:'Instrument Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif; --body:'Instrument Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;
 }
 *{box-sizing:border-box}
-/* Always keep room for the scrollbar, so pages that don't scroll (like Home) line up with ones that do */
-html{scrollbar-gutter:stable;background:var(--bg)}
 /* no single words left alone on the last line */
 p,li,dd,dt,label,legend,.lead,.hint,.small,td,th,blockquote{text-wrap:pretty}
 h1,h2,h3,h4{text-wrap:balance}
@@ -43,6 +41,8 @@ body{margin:0;font-family:var(--body);-webkit-font-smoothing:antialiased;-moz-os
 
 /* yellow header */
 .topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;transition:box-shadow .2s}
+/* On pages without a scrollbar, pad the header by the scrollbar's width so the nav stays put (see syncGutter) */
+.topbar > *{padding-right:var(--sbfill,0px)}
 .topbar.scrolled{box-shadow:0 1px 0 var(--line),0 8px 16px -12px var(--shadow)}
 @media (prefers-reduced-motion:reduce){.topbar{transition:none}}
 /* yellow bar: navy wordmark, deep teal syringe so it holds contrast on yellow */
@@ -1856,6 +1856,11 @@ $('confirm').addEventListener('keydown',e=>{
 $('confirm').addEventListener('click',e=>{ if(e.target===$('confirm')) closeRestart(); });
 
 window.addEventListener('scroll',()=>document.querySelector('.topbar').classList.toggle('scrolled', window.scrollY>4),{passive:true});
+// Pages that don't scroll have no scrollbar, so the page is wider and the right-aligned nav would jump.
+// Pad the header by the missing scrollbar width instead. Overlay scrollbars (phones, most Macs) measure 0.
+const SBW = (()=>{ const d=document.createElement('div'); d.style.cssText='position:absolute;top:-999px;width:100px;height:100px;overflow:scroll'; document.body.appendChild(d); const w=d.offsetWidth-d.clientWidth; d.remove(); return w; })();
+function syncGutter(){ const now = window.innerWidth - document.documentElement.clientWidth; document.documentElement.style.setProperty('--sbfill', Math.max(0, SBW-now)+'px'); }
+if(SBW){ new ResizeObserver(syncGutter).observe(document.body); window.addEventListener('resize', syncGutter); syncGutter(); }
 render();
 </script>
 
