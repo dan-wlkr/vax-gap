@@ -59,6 +59,9 @@ body{margin:0;font-family:var(--body);-webkit-font-smoothing:antialiased;-moz-os
 .appnav button{position:relative;display:flex;align-items:center;padding:0 12px;border:0;background:none;font:inherit;font-family:var(--display);font-size:15px;font-weight:500;color:rgba(17,17,17,.68);cursor:pointer;white-space:nowrap}
 .appnav button:hover{color:var(--ink-nav)}
 .appnav button[aria-current="page"]{color:var(--ink-nav);font-weight:700}
+/* Reserve the bold width so links don't shift when the current page changes */
+.appnav button[data-label]{flex-direction:column;justify-content:center}
+.appnav button[data-label]::after{content:attr(data-label);font-weight:700;height:0;overflow:hidden;visibility:hidden;pointer-events:none}
 .appnav .nav-cta{align-self:center;margin-left:10px;padding:9px 16px;border-radius:8px;background:var(--ink);color:#FFFFFF;font-weight:600}
 .appnav .nav-cta:hover{color:#FFFFFF;background:#22355A}
 .appnav .nav-cta[aria-current="page"]{color:#FFFFFF;font-weight:600}
@@ -76,6 +79,7 @@ body{margin:0;font-family:var(--body);-webkit-font-smoothing:antialiased;-moz-os
   .appnav{display:none;position:absolute;top:100%;left:0;right:0;margin:0;flex-direction:column;gap:0;background:var(--nav);border-top:1px solid rgba(20,35,63,.12);box-shadow:0 12px 20px -12px rgba(20,35,63,.45);padding:4px 0 10px}
   .appnav.open{display:flex}
   .appnav button{padding:14px var(--gutter);font-size:17px;justify-content:flex-start}
+  .appnav button[data-label]{align-items:flex-start}
   .appnav button[aria-current="page"]{background:rgba(255,255,255,.3);box-shadow:inset 4px 0 0 var(--ink-nav)}
   .appnav .nav-cta,.appnav .nav-cta[aria-current="page"]{align-self:stretch;justify-content:center;margin:10px var(--gutter) 4px;padding:14px 16px;border-radius:8px;background:var(--ink);color:#FFFFFF;box-shadow:none}
   .logo{font-size:20px}
@@ -555,9 +559,9 @@ label.block{display:block;font-weight:700;margin-bottom:4px}
     <button class="appbar-cta" data-view="check">Vaccine Checker</button>
     <button class="burger" id="burger" aria-expanded="false" aria-controls="appnav" aria-label="Menu"><span></span><span></span><span></span></button>
     <nav class="appnav" id="appnav" aria-label="Main">
-      <button data-view="home" aria-current="page">Home</button>
-      <button data-view="about">About</button>
-      <button data-view="updates">Updates</button>
+      <button data-view="home" data-label="Home" aria-current="page">Home</button>
+      <button data-view="about" data-label="About">About</button>
+      <button data-view="updates" data-label="Updates">Updates</button>
       <button data-view="check" class="nav-cta">Vaccine Checker</button>
     </nav>
   </div></div>
